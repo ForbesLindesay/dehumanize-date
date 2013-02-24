@@ -1,0 +1,27 @@
+{
+  "name": "dehumanize-date",
+  "version": "0.0.0",
+  "description": "Parse dates in all the formats humans like to use.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha -R spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ForbesLindesay/dehumanize-date.git"
+  },
+  "keywords": [
+    "date",
+    "parse",
+    "dates",
+    "humanize",
+    "humanise",
+    "human"
+  ],
+  "author": "ForbesLindesay",
+  "license": "MIT",
+  "devDependencies": {
+    "better-assert": "~1.0.0",
+    "mocha": "~1.8.1"
+  }
+}
