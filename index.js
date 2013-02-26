@@ -23,6 +23,8 @@ var NUMBER              = /^[0-9]+$/;
 var NUMBER_WITH_ORDINAL = /^([0-9]+)(st|nd|rd|th)?$/;
 var NUMBER_DATE         = /^(3[0-1]|[1-2][0-9]|0?[1-9])[,\|\\\/\-\. ]+(1[0-2]|0?[1-9])[,\|\\\/\-\. ]+([0-9]{4})$/;
 var NUMBER_DATE_USA     = /^(1[0-2]|0?[1-9])[,\|\\\/\-\. ]+(3[0-1]|[1-2][0-9]|0?[1-9])[,\|\\\/\-\. ]+([0-9]{4})$/;
+var NUMBER_DATE_SHORT_YEAR         = /^(3[0-1]|[1-2][0-9]|0?[1-9])[,\|\\\/\-\. ]+(1[0-2]|0?[1-9])[,\|\\\/\-\. ]+([0-9]{2})$/;
+var NUMBER_DATE_SHORT_YEAR_USA     = /^(1[0-2]|0?[1-9])[,\|\\\/\-\. ]+(3[0-1]|[1-2][0-9]|0?[1-9])[,\|\\\/\-\. ]+([0-9]{2})$/;
 var ISO_8601_DATE       = /^([0-9]{4})-?(1[0-2]|0?[1-9])-?(3[0-1]|[1-2][0-9]|0?[1-9])$/;
 
 function addDays(date, numberOfDays) {
@@ -66,6 +68,19 @@ function parseNumberDate(str, usa) {
   var match = usa ? NUMBER_DATE_USA.exec(str) : NUMBER_DATE.exec(str);
   if (match) {
     return usa ? new Date(+match[3], match[1] - 1, +match[2]) : new Date(+match[3], match[2] - 1, +match[1]);
+  } else {
+    return null;
+  }
+}
+
+exports.parseNumberDateShortYear = parseNumberDateShortYear;
+function parseNumberDateShortYear(str, usa, cutoff) {
+  var match = usa ? NUMBER_DATE_SHORT_YEAR_USA.exec(str) : NUMBER_DATE_SHORT_YEAR.exec(str);
+  if (match) {
+    var year = (+match[3]);
+    if (year > cutoff) year += 1900;
+    else year += 2000;
+    return usa ? new Date(year, match[1] - 1, +match[2]) : new Date(year, match[2] - 1, +match[1]);
   } else {
     return null;
   }

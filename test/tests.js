@@ -38,7 +38,6 @@ describe('parseLastThisNext', function () {
   });
 });
 
-
 describe('parseNumberDate', function () {
   it('understands "2-2-2012"', function () {
     assert(equal(dehumanize.parseNumberDate('2-2-2012'), 2012, 1, 2));
@@ -60,6 +59,24 @@ describe('parseNumberDate', function () {
   });
   it('returns `null` when it doesn\'t understand', function () {
     assert(dehumanize.parseNumberDate('80-80-2012') === null);
+  });
+});
+
+describe('parseNumberDateShortYear', function () {
+  it('understands "2-2-12"', function () {
+    assert(equal(dehumanize.parseNumberDateShortYear('2-2-12', false, 80), 2012, 1, 2));
+  });
+  it('understands "2/8/12"', function () {
+    assert(equal(dehumanize.parseNumberDateShortYear('2/8/12', false, 80), 2012, 7, 2));
+  });
+  it('understands "02-02-12"', function () {
+    assert(equal(dehumanize.parseNumberDateShortYear('02-02-12', false, 80), 2012, 1, 2));
+  });
+  it('understands "02-02-85"', function () {
+    assert(equal(dehumanize.parseNumberDateShortYear('02-02-85', false, 80), 1985, 1, 2));
+  });
+  it('returns `null` when it doesn\'t understand', function () {
+    assert(dehumanize.parseNumberDateShortYear('80-80-12', false, 80) === null);
   });
 });
 
