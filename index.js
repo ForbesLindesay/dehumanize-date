@@ -15,6 +15,7 @@ exports = module.exports = function parse(str, usa) {
   return parseNearbyDays(str, now) ||
          parseLastThisNext(str, now) ||
          parseNumberDate(str, usa) ||
+         parseNumberDateShortYear(str, usa, 80) ||
          parseWordyDate(str, now) ||
          parseIso8601Date(str);
 };
@@ -110,6 +111,9 @@ function parseWordyDateParts(rawDay, rawMonth, rawYear, today) {
     year = rawYear.match(NUMBER) ? rawYear * 1 : null;
   else
     year = today.getFullYear();
+
+  if (year < 100 && year >= 80) year += 1900;
+  if (year < 100) year += 2000;
 
   if (!(day && month !== null && year))
     return null;
