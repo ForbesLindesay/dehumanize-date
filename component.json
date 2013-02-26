@@ -2,7 +2,7 @@
   "name": "dehumanize-date",
   "repo": "ForbesLindesay/dehumanize-date",
   "description": "Parse dates in all the formats humans like to use.",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "keywords": [],
   "dependencies": {},
   "development": {},
