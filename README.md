@@ -13,6 +13,8 @@ Parse dates in all the formats humans like to use:
 [![Dependency Status](https://gemnasium.com/ForbesLindesay/dehumanize-date.png)](https://gemnasium.com/ForbesLindesay/dehumanize-date)
 [![NPM version](https://badge.fury.io/js/dehumanize-date.png)](http://badge.fury.io/js/dehumanize-date)
 
+[![testling badge](https://ci.testling.com/ForbesLindesay/dehumanize-date.png)](https://ci.testling.com/ForbesLindesay/dehumanize-date)
+
 ## Installation
 
     $ npm install dehumanize-date
