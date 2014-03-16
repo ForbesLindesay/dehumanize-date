@@ -4,7 +4,7 @@
   "description": "Parse dates in all the formats humans like to use.",
   "main": "index.js",
   "scripts": {
-    "test": "mocha -R spec"
+    "test": "node test"
   },
   "repository": {
     "type": "git",
@@ -21,6 +21,6 @@
   "author": "ForbesLindesay",
   "license": "MIT",
   "devDependencies": {
-    "mocha": "~1.8.1"
+    "tape": "~2.10.2"
   }
 }

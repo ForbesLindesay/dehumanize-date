@@ -126,6 +126,8 @@ function parseIso8601Date(string) {
   var match;
   if (match = ISO_8601_DATE.exec(string)) {
     return date(+match[1], match[2] - 1, +match[3]);
+  } else {
+    return null;
   }
 }
 
@@ -146,7 +148,7 @@ function date(year, month, day) {
   try {
     d.toISOString();
   } catch (ex) {
-    throw new Error(string + ' (' + year + ',' + month + ',' + day + ')');
+    return null;
   }
   return d;
 }
