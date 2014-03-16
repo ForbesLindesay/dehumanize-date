@@ -4,7 +4,16 @@ var dehumanize = require('../');
 var day = 60 * 60 * 24 * 1000;
 
 function equal(d, year, month, day) {
-  return d.valueOf() === new Date(year, month, day).valueOf() || console.dir(d);
+  month++;
+  if (month < 10) month = '0' + month;
+  if (day < 10) day = '0' + day;
+  var expected = year + '-' + month + '-' + day + 'T00:00:00.000Z';
+  try {
+    return d.toISOString() === expected || console.dir(d.toISOString() + ' === ' + expected);
+  } catch (ex) {
+    console.dir(d);
+    throw ex;
+  }
 }
 
 describe('parseNearbyDays', function () {

@@ -7,8 +7,6 @@ var DAY_NAMES = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday
 
 exports = module.exports = function parse(str, usa) {
   var now = new Date();
-  //strip time information
-  now = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
   str = str.trim().toLowerCase();
 
@@ -28,37 +26,38 @@ var NUMBER_DATE_SHORT_YEAR         = /^(3[0-1]|[1-2][0-9]|0?[1-9])[,\|\\\/\-\. ]
 var NUMBER_DATE_SHORT_YEAR_USA     = /^(1[0-2]|0?[1-9])[,\|\\\/\-\. ]+(3[0-1]|[1-2][0-9]|0?[1-9])[,\|\\\/\-\. ]+([0-9]{2})$/;
 var ISO_8601_DATE       = /^([0-9]{4})-?(1[0-2]|0?[1-9])-?(3[0-1]|[1-2][0-9]|0?[1-9])$/;
 
-function addDays(date, numberOfDays) {
-  return new Date(date * 1 + numberOfDays * 60 * 60 * 24 * 1000);
+function addDays(now, numberOfDays) {
+  var result = new Date(now * 1 + numberOfDays * 60 * 60 * 24 * 1000);
+  return date(result.getFullYear(), result.getMonth(), result.getDate());
 }
 
 
 exports.parseNearbyDays = parseNearbyDays;
-function parseNearbyDays(string, today) {
+function parseNearbyDays(string, now) {
   if (string == 'today') {
-    return today;
+    return date(now.getFullYear(), now.getMonth(), now.getDate());;
   } else if (string == 'yesterday') {
-    return addDays(today, -1);
+    return addDays(now, -1);
   } else if (string == 'tomorrow') {
-    return addDays(today, +1);
+    return addDays(now, +1);
   } else {
     return null;
   }
 }
 
 exports.parseLastThisNext = parseLastThisNext;
-function parseLastThisNext(string, today) {
+function parseLastThisNext(string, now) {
   var tokens = string.split(/[,\s]+/);
 
   if (['last', 'this', 'next'].indexOf(tokens[0]) >= 0 && 
       DAY_NAMES.indexOf(tokens[1]) >= 0 &&
       tokens.length === 2) {
-    var dayDiff = DAY_NAMES.indexOf(tokens[1]) - today.getDay();
+    var dayDiff = DAY_NAMES.indexOf(tokens[1]) - now.getDay();
     if (dayDiff < 0) dayDiff += 7;
 
-    if (tokens[0] === 'last') return addDays(today, dayDiff - 7);
-    if (tokens[0] === 'this') return addDays(today, dayDiff);
-    if (tokens[0] === 'next') return addDays(today, dayDiff + 7);
+    if (tokens[0] === 'last') return addDays(now, dayDiff - 7);
+    if (tokens[0] === 'this') return addDays(now, dayDiff);
+    if (tokens[0] === 'next') return addDays(now, dayDiff + 7);
   } else {
     return null;
   }
@@ -68,7 +67,7 @@ exports.parseNumberDate = parseNumberDate;
 function parseNumberDate(str, usa) {
   var match = usa ? NUMBER_DATE_USA.exec(str) : NUMBER_DATE.exec(str);
   if (match) {
-    return usa ? new Date(+match[3], match[1] - 1, +match[2]) : new Date(+match[3], match[2] - 1, +match[1]);
+    return usa ? date(+match[3], match[1] - 1, +match[2]) : date(+match[3], match[2] - 1, +match[1]);
   } else {
     return null;
   }
@@ -81,7 +80,7 @@ function parseNumberDateShortYear(str, usa, cutoff) {
     var year = (+match[3]);
     if (year > cutoff) year += 1900;
     else year += 2000;
-    return usa ? new Date(year, match[1] - 1, +match[2]) : new Date(year, match[2] - 1, +match[1]);
+    return usa ? date(year, match[1] - 1, +match[2]) : date(year, match[2] - 1, +match[1]);
   } else {
     return null;
   }
@@ -118,20 +117,13 @@ function parseWordyDateParts(rawDay, rawMonth, rawYear, today) {
   if (!(day && month !== null && year))
     return null;
 
-  var result = new Date(year, month, day);
-
-  // Date constructor will happily accept invalid dates
-  // so we're checking that day existed in the given month
-  if (result.getMonth() != month || result.getDate() != day)
-    return null;
-
-  return result;
+  return date(year, month, day);
 }
 
 function parseIso8601Date(string) {
   var match;
   if (match = ISO_8601_DATE.exec(string)) {
-    return new Date(+match[1], match[2] - 1, +match[3]);
+    return date(+match[1], match[2] - 1, +match[3]);
   }
 }
 
@@ -140,4 +132,19 @@ exports.monthFromName = monthFromName;
 function monthFromName(month) {
   var monthIndex = month.length === 3 ? monthAbreviations.indexOf(month) : MONTH_NAMES.indexOf(month);
   return monthIndex >= 0 ? monthIndex : null;
+}
+
+exports.date = date;
+function date(year, month, day) {
+  month++;
+  if (month < 10) month = '0' + month;
+  if (day < 10) day = '0' + day;
+  var string = year + '-' + month + '-' + day + 'T00:00:00.000Z';
+  var d = new Date(string);
+  try {
+    d.toISOString();
+  } catch (ex) {
+    throw new Error(string + ' (' + year + ',' + month + ',' + day + ')');
+  }
+  return d;
 }
