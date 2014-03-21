@@ -140,15 +140,28 @@ function monthFromName(month) {
 
 exports.date = date;
 function date(year, month, day) {
-  month++;
-  if (month < 10) month = '0' + month;
-  if (day < 10) day = '0' + day;
-  var string = year + '-' + month + '-' + day + 'T00:00:00.000Z';
-  var d = new Date(string);
+  var d = new Date(0);
+  d.setUTCFullYear(year);
+  d.setUTCMonth(month);
+  d.setUTCDate(day);
+  d.setUTCHours(0);
+  d.setUTCMinutes(0);
+  d.setUTCSeconds(0);
+  d.setUTCMilliseconds(0);
   try {
-    d.toISOString();
+    if (getISOString(year, month, day) === d.toISOString()) {
+      return d;
+    } else {
+      return null;
+    }
   } catch (ex) {
     return null;
   }
   return d;
+}
+function getISOString(year, month, day) {
+  month++;
+  if (month < 10) month = '0' + month;
+  if (day < 10) day = '0' + day;
+  return year + '-' + month + '-' + day + 'T00:00:00.000Z';
 }
