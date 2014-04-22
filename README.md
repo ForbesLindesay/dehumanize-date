@@ -9,9 +9,9 @@ Parse dates in all the formats humans like to use:
  - 09-08-2008
  - 2008-08-09
 
-[![Build Status](https://travis-ci.org/ForbesLindesay/dehumanize-date.png?branch=master)](https://travis-ci.org/ForbesLindesay/dehumanize-date)
-[![Dependency Status](https://gemnasium.com/ForbesLindesay/dehumanize-date.png)](https://gemnasium.com/ForbesLindesay/dehumanize-date)
-[![NPM version](https://badge.fury.io/js/dehumanize-date.png)](http://badge.fury.io/js/dehumanize-date)
+[![Build Status](https://img.shields.io/travis/ForbesLindesay/dehumanize-date/master.svg)](https://travis-ci.org/ForbesLindesay/dehumanize-date)
+[![Dependency Status](https://img.shields.io/gemnasium/ForbesLindesay/dehumanize-date.svg)](https://gemnasium.com/ForbesLindesay/dehumanize-date)
+[![NPM version](https://img.shields.io/npm/v/dehumanize-date.svg)](http://badge.fury.io/js/dehumanize-date)
 
 [![testling badge](https://ci.testling.com/ForbesLindesay/dehumanize-date.png)](https://ci.testling.com/ForbesLindesay/dehumanize-date)
 
