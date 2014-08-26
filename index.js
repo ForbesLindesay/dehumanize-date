@@ -51,7 +51,7 @@ exports.parseLastThisNext = parseLastThisNext;
 function parseLastThisNext(string, now) {
   var tokens = string.split(/[,\s]+/);
 
-  if (['last', 'this', 'next'].indexOf(tokens[0]) >= 0 && 
+  if (['last', 'this', 'next'].indexOf(tokens[0]) >= 0 &&
       DAY_NAMES.indexOf(tokens[1]) >= 0 &&
       tokens.length === 2) {
     var dayDiff = DAY_NAMES.indexOf(tokens[1]) - now.getDay();
@@ -140,24 +140,13 @@ function monthFromName(month) {
 
 exports.date = date;
 function date(year, month, day) {
-  var d = new Date(0);
-  d.setUTCFullYear(year);
-  d.setUTCMonth(month);
-  d.setUTCDate(day);
-  d.setUTCHours(0);
-  d.setUTCMinutes(0);
-  d.setUTCSeconds(0);
-  d.setUTCMilliseconds(0);
-  try {
-    if (getISOString(year, month, day) === d.toISOString()) {
-      return d;
-    } else {
-      return null;
-    }
-  } catch (ex) {
-    return null;
-  }
-  return d;
+  month++;
+  if (month > 11 || month < 0) return null;
+  if (day > 31 || day < 1) return null;
+  if (month < 10) month = '0' + month;
+  if (day < 10) day = '0' + day;
+
+  return year + '-' + month + '-' + day;
 }
 function getISOString(year, month, day) {
   month++;

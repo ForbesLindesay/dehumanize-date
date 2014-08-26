@@ -9,8 +9,6 @@ function describe(name, parseDate, fn) {
     fn(function (input, expected) {
       var initialExpected = expected;
       var actual = parseDate(input);
-      if (actual !== null && typeof actual !== 'number') actual = actual.toISOString();
-      if (expected !== null && typeof expected !== 'number') expected += 'T00:00:00.000Z';
       t.equal(actual, expected, input + ' -> ' + initialExpected);
     });
     t.end();
