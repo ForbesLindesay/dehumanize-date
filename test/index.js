@@ -84,7 +84,7 @@ describe('parseWordyDate', function (input) {
   equal('36th june', null);
   equal('36th june 2012', null);
 
-  equal('1st December 2012', '2012-12-01');
+  equal('1st december 2012', '2012-12-01');
 });
 
 describe('dehumanize', function (input) {
