@@ -141,7 +141,7 @@ function monthFromName(month) {
 exports.date = date;
 function date(year, month, day) {
   month++;
-  if (month > 11 || month < 0) return null;
+  if (month > 12 || month < 0) return null;
   if (day > 31 || day < 1) return null;
   if (month < 10) month = '0' + month;
   if (day < 10) day = '0' + day;
