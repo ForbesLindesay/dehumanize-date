@@ -58,6 +58,20 @@ describe('parseNumberDateShortYear', function (input) {
   equal('02-02-85', '1985-02-02');
   equal('80-80-12', null);
 });
+
+describe('parseNumberNoYear', function (input) {
+  return dehumanize.parseNumberNoYear(input, false, new Date(2012, 1, 1)));
+}, function (equal) {
+  equal('2-22', '2012-02-02');
+  equal('2/8', '2012-08-02');
+  equal('2\\8', '2012-08-02');
+  equal('2,4', '2012-04-02');
+  equal('2 4', '2012-04-02');
+  equal('02-02', '2012-02-02');
+  equal('30/01', '2012-01-30');
+  equal('80-80', null);
+});
+
 describe('monthFromName', function (input) {
   return dehumanize.monthFromName(input);
 }, function (equal) {
@@ -68,6 +82,7 @@ describe('monthFromName', function (input) {
   equal('foo', null);
   equal('foobar', null);
 });
+
 describe('parseWordyDate', function (input) {
   return dehumanize.parseWordyDate(input, new Date(2012, 1, 1));
 }, function (equal) {
@@ -78,7 +93,6 @@ describe('parseWordyDate', function (input) {
   equal('12th june 2012', '2012-06-12');
   equal('12 june 2012', '2012-06-12');
   equal('12th june', '2012-06-12');
-
   equal('12th ju', null);
   equal('12th ju 2012', null);
   equal('36th june', null);
