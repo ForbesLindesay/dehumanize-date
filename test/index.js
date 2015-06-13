@@ -60,7 +60,7 @@ describe('parseNumberDateShortYear', function (input) {
 });
 
 describe('parseNumberNoYear', function (input) {
-  return dehumanize.parseNumberNoYear(input, false, new Date(2012, 1, 1)));
+  return dehumanize.parseNumberNoYear(input, false, new Date(2012, 1, 1));
 }, function (equal) {
   equal('2-22', '2012-02-02');
   equal('2/8', '2012-08-02');
