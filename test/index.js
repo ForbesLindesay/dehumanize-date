@@ -93,4 +93,8 @@ describe('dehumanize', function (input) {
   equal(' 14th July 2012 ', '2012-07-14');
   equal('foo', null);
   equal('foobar', null);
+  equal('29/2/15', null);
+  equal('28/2/15', '2015-02-28');
+  equal('29/2/2004', '2004-02-29');
+  equal('31-6-2012', null);
 });
