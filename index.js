@@ -154,13 +154,22 @@ function monthFromName(month) {
   return monthIndex >= 0 ? monthIndex : null;
 }
 
+function isLeapYear(year) {
+  return ((year % 4 === 0) && (year % 100 !== 0)) || (year % 400 === 0);
+}
+
 exports.date = date;
 function date(year, month, day) {
   month++;
   if (month > 12 || month < 0) return null;
   if (day > 31 || day < 1) return null;
+  if (day > 30 && (month === 3 || month === 5 || month === 8 || month === 10)) return null;
+  if (day > 29 && (month === 1)) return null;
+  if (day > 28 && (month === 1) && !isLeapYear(year)) return null;
+
   if (month < 10) month = '0' + month;
   if (day < 10) day = '0' + day;
+
 
   return year + '-' + month + '-' + day;
 }
