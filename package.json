@@ -20,6 +20,9 @@
   ],
   "author": "ForbesLindesay",
   "license": "MIT",
+  "dependencies": {
+    "is-leap-year": "^0.1.0"
+  },
   "devDependencies": {
     "tape": "~2.10.2"
   },

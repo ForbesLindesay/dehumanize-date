@@ -1,11 +1,28 @@
 'use strict';
 
+var isLeapYear = require('is-leap-year');
+
 var MONTH_NAMES = ["january", "february", "march",
                    "april",   "may",      "june",
                    "july",    "august",   "september",
                    "october", "november", "december"];
 
 var DAY_NAMES = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
+
+var DAYS_IN_MONTH = [
+  31,
+  null, // 29 in leap years, otherwise 28
+  31,
+  30,
+  31,
+  30,
+  31,
+  31,
+  30,
+  31,
+  30,
+  31
+];
 
 exports = module.exports = function parse(str, usa) {
   var now = new Date();
@@ -157,8 +174,13 @@ function monthFromName(month) {
 exports.date = date;
 function date(year, month, day) {
   month++;
-  if (month > 12 || month < 0) return null;
-  if (day > 31 || day < 1) return null;
+  if (month > 12 || month < 1) return null;
+  if (day < 1) return null;
+  if (month === 2) {
+    if (day > (isLeapYear(year) ? 29 : 28)) return null;
+  } else if (day > DAYS_IN_MONTH[month - 1]) {
+    return null;
+  }
   if (month < 10) month = '0' + month;
   if (day < 10) day = '0' + day;
 
