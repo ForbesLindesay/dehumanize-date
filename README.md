@@ -14,8 +14,8 @@ Return dates in just the format that computers should use:
  - 2008-08-09
 
 [![Build Status](https://img.shields.io/travis/ForbesLindesay/dehumanize-date/master.svg)](https://travis-ci.org/ForbesLindesay/dehumanize-date)
-[![Dependency Status](https://img.shields.io/gemnasium/ForbesLindesay/dehumanize-date.svg)](https://gemnasium.com/ForbesLindesay/dehumanize-date)
-[![NPM version](https://img.shields.io/npm/v/dehumanize-date.svg)](http://badge.fury.io/js/dehumanize-date)
+[![Dependency Status](https://img.shields.io/david/ForbesLindesay/dehumanize-date.svg)](https://david-dm.org/ForbesLindesay/dehumanize-date)
+[![NPM version](https://img.shields.io/npm/v/dehumanize-date.svg)](https://www.npmjs.com/package/dehumanize-date)
 
 [![testling badge](https://ci.testling.com/ForbesLindesay/dehumanize-date.png)](https://ci.testling.com/ForbesLindesay/dehumanize-date)
 
