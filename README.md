@@ -31,7 +31,15 @@ A simple function which takes a string as an argument and returns a string in th
 var date = dehumanizeDate(userInput);
 ```
 
-If you want to use US formats for numerical dates you should pass `true` as the second parameter:
+The second parameter contains options. You can set whether to use US-style short dates, you can change
+what 'now' is for input like 'yesterday', and you can change the cutoff for 2-digit years that determines
+whether a given two-digit year is in the 21st or 20th century.
+
+```javascript
+var date = dehumanizeDate(userInput, {usa: true, now: new Date(), cutoff: 80});
+```
+
+If you just want to use US formats for numerical dates you can also pass `true` as the second parameter:
 
 ```javascript
 var date = dehumanizeDate(userInput, true);
