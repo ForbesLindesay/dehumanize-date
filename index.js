@@ -24,17 +24,23 @@ var DAYS_IN_MONTH = [
   31
 ];
 
-exports = module.exports = function parse(str, usa) {
-  var now = new Date();
+exports = module.exports = function parse(str, options) {
+  if (typeof options !== 'object') {
+    options = {usa: options};
+  }
+  options = options || {};
+  options.usa = options.hasOwnProperty('usa') ? options.usa : false;
+  options.now = options.hasOwnProperty('now') ? options.now : new Date();
+  options.cutoff = options.hasOwnProperty('cutoff') ? options.cutoff : 80;
 
   str = str.trim().toLowerCase();
 
-  return parseNearbyDays(str, now) ||
-         parseLastThisNext(str, now) ||
-         parseNumberDate(str, usa) ||
-         parseNumberDateShortYear(str, usa, 80) ||
-         parseNumberDateNoYear(str, usa, now) ||
-         parseWordyDate(str, now) ||
+  return parseNearbyDays(str, options.now) ||
+         parseLastThisNext(str, options.now) ||
+         parseNumberDate(str, options.usa) ||
+         parseNumberDateShortYear(str, options.usa, options.cutoff) ||
+         parseNumberDateNoYear(str, options.usa, options.now) ||
+         parseWordyDate(str, options.now) ||
          parseIso8601Date(str);
 };
 

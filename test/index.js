@@ -101,6 +101,15 @@ describe('parseWordyDate', function (input) {
   equal('1st december 2012', '2012-12-01');
 });
 
+describe('dehumanize cutoff', function (input) {
+  return dehumanize(input, {cutoff: 40});
+}, function (equal) {
+  equal('28/2/60', '1960-02-28');
+  equal('28/2/30', '2030-02-28');
+  equal('28/2/15', '2015-02-28');
+  equal('29/2/2004', '2004-02-29');
+});
+
 describe('dehumanize', function (input) {
   return dehumanize(input);
 }, function (equal) {
@@ -111,4 +120,16 @@ describe('dehumanize', function (input) {
   equal('28/2/15', '2015-02-28');
   equal('29/2/2004', '2004-02-29');
   equal('31-6-2012', null);
+});
+
+describe('dehumanize usa', function (input) {
+  return dehumanize(input, {usa: true});
+}, function (equal) {
+  equal(' 14th July 2012 ', '2012-07-14');
+  equal('foo', null);
+  equal('foobar', null);
+  equal('29/2/15', null);
+  equal('2/28/15', '2015-02-28');
+  equal('2/29/2004', '2004-02-29');
+  equal('31-16-2012', null);
 });
