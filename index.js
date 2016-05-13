@@ -40,7 +40,7 @@ exports = module.exports = function parse(str, options) {
          parseNumberDate(str, options.usa) ||
          parseNumberDateShortYear(str, options.usa, options.cutoff) ||
          parseNumberDateNoYear(str, options.usa, options.now) ||
-         parseWordyDate(str, options.now) ||
+         parseWordyDate(str, options.now, options.cutoff) ||
          parseIso8601Date(str);
 };
 
@@ -128,21 +128,21 @@ function parseNumberDateNoYear(str, usa, today) {
 }
 
 exports.parseWordyDate = parseWordyDate;
-function parseWordyDate(string, today) {
+function parseWordyDate(string, today, cutoff) {
   var tokens = string.split(/[,\s]+/);
   if (tokens.length >= 2) {
     var match;
     if (match = tokens[0].match(NUMBER_WITH_ORDINAL)) {
-      return parseWordyDateParts(match[1], tokens[1], tokens[2], today);
+      return parseWordyDateParts(match[1], tokens[1], tokens[2], today, cutoff);
     } else if (match = tokens[1].match(NUMBER_WITH_ORDINAL)) {
-      return parseWordyDateParts(match[1], tokens[0], tokens[2], today);
+      return parseWordyDateParts(match[1], tokens[0], tokens[2], today, cutoff);
     } else {
       return null;
     }
   }
 }
 
-function parseWordyDateParts(rawDay, rawMonth, rawYear, today) {
+function parseWordyDateParts(rawDay, rawMonth, rawYear, today, cutoff) {
   var day = +rawDay;
   var month = monthFromName(rawMonth);
   var year;
@@ -152,7 +152,7 @@ function parseWordyDateParts(rawDay, rawMonth, rawYear, today) {
   else
     year = today.getFullYear();
 
-  if (year < 100 && year >= 80) year += 1900;
+  if (year < 100 && year >= cutoff) year += 1900;
   if (year < 100) year += 2000;
 
   if (!(day && month !== null && year))

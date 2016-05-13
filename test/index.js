@@ -108,6 +108,8 @@ describe('dehumanize cutoff', function (input) {
   equal('28/2/30', '2030-02-28');
   equal('28/2/15', '2015-02-28');
   equal('29/2/2004', '2004-02-29');
+  equal('june 1 1960', '1960-06-01');
+  equal('jun 1 60', '1960-06-01');
 });
 
 describe('dehumanize', function (input) {
