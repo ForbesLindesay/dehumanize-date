@@ -78,16 +78,19 @@ function parseNearbyDays(string, now) {
 exports.parseLastThisNext = parseLastThisNext;
 function parseLastThisNext(string, now) {
   var tokens = string.split(/[,\s]+/);
-
   if (['last', 'this', 'next'].indexOf(tokens[0]) >= 0 &&
-      DAY_NAMES.indexOf(tokens[1]) >= 0 &&
-      tokens.length === 2) {
-    var dayDiff = DAY_NAMES.indexOf(tokens[1]) - now.getDay();
-    if (dayDiff < 0) dayDiff += 7;
-
-    if (tokens[0] === 'last') return addDays(now, dayDiff - 7);
-    if (tokens[0] === 'this') return addDays(now, dayDiff);
-    if (tokens[0] === 'next') return addDays(now, dayDiff + 7);
+      tokens.length === 2 ) {
+    var dayAbbreviations = DAY_NAMES.map(function (name) { return name.substr(0, tokens[1].length); });
+    var dayIndex = dayAbbreviations.indexOf(tokens[1]);
+    if (dayIndex !== -1 &&
+        dayAbbreviations.indexOf(tokens[1], dayIndex + 1) === -1) {
+      var dayDiff = dayIndex - now.getDay();
+      if (dayDiff < 0) dayDiff += 7;
+      if (tokens[0] === 'last') return addDays(now, dayDiff - 7);
+      if (tokens[0] === 'this') return addDays(now, dayDiff);
+      if (tokens[0] === 'next') return addDays(now, dayDiff + 7);
+    }
+    return null;
   } else {
     return null;
   }
@@ -172,9 +175,10 @@ function parseIso8601Date(string) {
 
 exports.monthFromName = monthFromName;
 function monthFromName(month) {
-  var monthAbreviations = MONTH_NAMES.map(function (name) { return name.substr(0, month.length); });
-  var monthIndex = monthAbreviations.indexOf(month);
-  if (monthIndex !== -1 && monthAbreviations.indexOf(month, monthIndex + 1) === -1) {
+  var monthAbbreviations = MONTH_NAMES.map(function (name) { return name.substr(0, month.length); });
+  var monthIndex = monthAbbreviations.indexOf(month);
+  if (monthIndex !== -1 &&
+      monthAbbreviations.indexOf(month, monthIndex + 1) === -1) {
     return monthIndex;
   }
   return null;
