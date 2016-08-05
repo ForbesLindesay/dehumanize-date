@@ -172,16 +172,12 @@ function parseIso8601Date(string) {
 
 exports.monthFromName = monthFromName;
 function monthFromName(month) {
-  var monthIndex;
-  var monthCount = 0;
   var monthAbreviations = MONTH_NAMES.map(function (name) { return name.substr(0, month.length); });
-  var monthPosition = monthAbreviations.indexOf(month);
-  while ( monthPosition !== -1 && monthCount <= 2 ) { // If more than one found, stop looking.
-    monthCount++;
-    monthPosition = monthAbreviations.indexOf(month, monthPosition + 1);
-    monthIndex = monthCount === 1 ? monthAbreviations.indexOf(month) : MONTH_NAMES.indexOf(month);
+  var monthIndex = monthAbreviations.indexOf(month);
+  if (monthIndex !== -1 && monthAbreviations.indexOf(month, monthIndex + 1) === -1) {
+    return monthIndex;
   }
-  return monthCount === 1 ? monthIndex : null;
+  return null;
 }
 
 exports.date = date;
