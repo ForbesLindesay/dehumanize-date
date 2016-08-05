@@ -75,10 +75,18 @@ describe('parseNumberDateNoYear', function (input) {
 describe('monthFromName', function (input) {
   return dehumanize.monthFromName(input);
 }, function (equal) {
+  equal('january', 0);
+  equal('januar', 0);
+  equal('janua', 0);
+  equal('janu', 0);
+  equal('jan', 0);
+  equal('ja', 0);
   equal('june', 5);
   equal('jun', 5);
-  equal('january', 0);
-  equal('jan', 0);
+  equal('july', 6);
+  equal('jul', 6);
+  equal('ju', null);
+  equal('j', null);
   equal('foo', null);
   equal('foobar', null);
 });

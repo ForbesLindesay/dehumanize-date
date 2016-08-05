@@ -170,11 +170,14 @@ function parseIso8601Date(string) {
   }
 }
 
-var monthAbreviations = MONTH_NAMES.map(function (name) { return name.substr(0, 3); });
 exports.monthFromName = monthFromName;
 function monthFromName(month) {
-  var monthIndex = month.length === 3 ? monthAbreviations.indexOf(month) : MONTH_NAMES.indexOf(month);
-  return monthIndex >= 0 ? monthIndex : null;
+  var monthAbreviations = MONTH_NAMES.map(function (name) { return name.substr(0, month.length); });
+  var monthIndex = monthAbreviations.indexOf(month);
+  if (monthIndex !== -1 && monthAbreviations.indexOf(month, monthIndex + 1) === -1) {
+    return monthIndex;
+  }
+  return null;
 }
 
 exports.date = date;
