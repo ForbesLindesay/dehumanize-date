@@ -99,12 +99,18 @@ function parseLastThisNext(string, now) {
 exports.parseAgoFrom = parseAgoFrom;
 function parseAgoFrom(string, now) {
   var tokens = string.split(/[,\s]+/);
-  if (['day', 'days'].indexOf(tokens[1]) >= 0 &&
+  if (['day', 'days', 'week', 'weeks'].indexOf(tokens[1]) >= 0 &&
       tokens[0].match(NUMBER) &&
       ['ago', 'from'].indexOf(tokens[2]) >= 0
     ) {
-      if (tokens[2] === 'ago') return addDays(now, tokens[0] * -1);
-      if (tokens[2] === 'from') return addDays(now, tokens[0]);
+      if (tokens[2] === 'ago') {
+        if (['day', 'days'].indexOf(tokens[1]) >= 0) return addDays(now, tokens[0] * -1);
+        if (['week', 'weeks'].indexOf(tokens[1]) >= 0) return addDays(now, (tokens[0] * 7) * -1);
+      }
+      if (tokens[2] === 'from') {
+        if (['day', 'days'].indexOf(tokens[1]) >= 0) return addDays(now, tokens[0]);
+        if (['week', 'weeks'].indexOf(tokens[1]) >= 0) return addDays(now, (tokens[0] * 7));
+      }
       return null;
     } else {
     return null;

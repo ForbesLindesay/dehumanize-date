@@ -45,6 +45,10 @@ describe('parseAgoFrom', function (input) {
   equal('2 days from now', '2000-01-07');
   equal('1 day ago', '2000-01-04');
   equal('1 day from now', '2000-01-06');
+  equal('1 week from now', '2000-01-12');
+  equal('2 weeks from now', '2000-01-19');
+  equal('1 week ago', '1999-12-29');
+  equal('2 weeks ago', '1999-12-22');
   equal('foo days ago', null);
 });
 
