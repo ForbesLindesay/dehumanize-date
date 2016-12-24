@@ -29,9 +29,9 @@ exports = module.exports = function parse(str, options) {
     options = {usa: options};
   }
   options = options || {};
-  options.usa = options.hasOwnProperty('usa') ? options.usa : false;
-  options.now = options.hasOwnProperty('now') ? options.now : new Date();
-  options.cutoff = options.hasOwnProperty('cutoff') ? options.cutoff : 80;
+  options.usa = options.usa !== undefined ? options.usa : false;
+  options.now = options.now !== undefined  ? options.now : new Date();
+  options.cutoff = options.cutoff !== undefined ? options.cutoff : 80;
 
   str = str.trim().toLowerCase();
 
