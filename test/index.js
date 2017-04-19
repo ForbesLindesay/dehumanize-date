@@ -28,8 +28,13 @@ describe('parseLastThisNext', function (input) {
   return dehumanize.parseLastThisNext(input, new Date(2000, 0, 5));
 }, function (equal) {
   equal('next monday', '2000-01-17');
+  equal('next m', '2000-01-17');
   equal('last tuesday', '2000-01-04');
+  equal('last tu', '2000-01-04');
   equal('this thursday', '2000-01-06');
+  equal('this th', '2000-01-06');
+  equal('last t', null);
+  equal('next s', null);
   equal('foo bar', null);
 });
 
