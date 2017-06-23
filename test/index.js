@@ -28,9 +28,28 @@ describe('parseLastThisNext', function (input) {
   return dehumanize.parseLastThisNext(input, new Date(2000, 0, 5));
 }, function (equal) {
   equal('next monday', '2000-01-17');
+  equal('next m', '2000-01-17');
   equal('last tuesday', '2000-01-04');
+  equal('last tu', '2000-01-04');
   equal('this thursday', '2000-01-06');
+  equal('this th', '2000-01-06');
+  equal('last t', null);
+  equal('next s', null);
   equal('foo bar', null);
+});
+
+describe('parseAgoFrom', function (input) {
+  return dehumanize.parseAgoFrom(input, new Date(2000, 0, 5));
+}, function (equal) {
+  equal('2 days ago', '2000-01-03');
+  equal('2 days from now', '2000-01-07');
+  equal('1 day ago', '2000-01-04');
+  equal('1 day from now', '2000-01-06');
+  equal('1 week from now', '2000-01-12');
+  equal('2 weeks from now', '2000-01-19');
+  equal('1 week ago', '1999-12-29');
+  equal('2 weeks ago', '1999-12-22');
+  equal('foo days ago', null);
 });
 
 describe('parseNumberDate', function (input) {

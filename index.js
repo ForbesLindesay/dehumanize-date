@@ -37,6 +37,7 @@ exports = module.exports = function parse(str, options) {
 
   return parseNearbyDays(str, options.now) ||
          parseLastThisNext(str, options.now) ||
+         parseAgoFrom(str, options.now) ||
          parseNumberDate(str, options.usa) ||
          parseNumberDateShortYear(str, options.usa, options.cutoff) ||
          parseNumberDateNoYear(str, options.usa, options.now) ||
@@ -61,7 +62,6 @@ function addDays(now, numberOfDays) {
   return date(result.getFullYear(), result.getMonth(), result.getDate());
 }
 
-
 exports.parseNearbyDays = parseNearbyDays;
 function parseNearbyDays(string, now) {
   if (string == 'today') {
@@ -78,17 +78,41 @@ function parseNearbyDays(string, now) {
 exports.parseLastThisNext = parseLastThisNext;
 function parseLastThisNext(string, now) {
   var tokens = string.split(/[,\s]+/);
-
   if (['last', 'this', 'next'].indexOf(tokens[0]) >= 0 &&
-      DAY_NAMES.indexOf(tokens[1]) >= 0 &&
-      tokens.length === 2) {
-    var dayDiff = DAY_NAMES.indexOf(tokens[1]) - now.getDay();
-    if (dayDiff < 0) dayDiff += 7;
-
-    if (tokens[0] === 'last') return addDays(now, dayDiff - 7);
-    if (tokens[0] === 'this') return addDays(now, dayDiff);
-    if (tokens[0] === 'next') return addDays(now, dayDiff + 7);
+      tokens.length === 2 ) {
+    var dayAbbreviations = DAY_NAMES.map(function (name) { return name.substr(0, tokens[1].length); });
+    var dayIndex = dayAbbreviations.indexOf(tokens[1]);
+    if (dayIndex !== -1 &&
+        dayAbbreviations.indexOf(tokens[1], dayIndex + 1) === -1) {
+      var dayDiff = dayIndex - now.getDay();
+      if (dayDiff < 0) dayDiff += 7;
+      if (tokens[0] === 'last') return addDays(now, dayDiff - 7);
+      if (tokens[0] === 'this') return addDays(now, dayDiff);
+      if (tokens[0] === 'next') return addDays(now, dayDiff + 7);
+    }
+    return null;
   } else {
+    return null;
+  }
+}
+
+exports.parseAgoFrom = parseAgoFrom;
+function parseAgoFrom(string, now) {
+  var tokens = string.split(/[,\s]+/);
+  if (['day', 'days', 'week', 'weeks'].indexOf(tokens[1]) >= 0 &&
+      tokens[0].match(NUMBER) &&
+      ['ago', 'from'].indexOf(tokens[2]) >= 0
+    ) {
+      if (tokens[2] === 'ago') {
+        if (['day', 'days'].indexOf(tokens[1]) >= 0) return addDays(now, tokens[0] * -1);
+        if (['week', 'weeks'].indexOf(tokens[1]) >= 0) return addDays(now, (tokens[0] * 7) * -1);
+      }
+      if (tokens[2] === 'from') {
+        if (['day', 'days'].indexOf(tokens[1]) >= 0) return addDays(now, tokens[0]);
+        if (['week', 'weeks'].indexOf(tokens[1]) >= 0) return addDays(now, (tokens[0] * 7));
+      }
+      return null;
+    } else {
     return null;
   }
 }
@@ -172,9 +196,10 @@ function parseIso8601Date(string) {
 
 exports.monthFromName = monthFromName;
 function monthFromName(month) {
-  var monthAbreviations = MONTH_NAMES.map(function (name) { return name.substr(0, month.length); });
-  var monthIndex = monthAbreviations.indexOf(month);
-  if (monthIndex !== -1 && monthAbreviations.indexOf(month, monthIndex + 1) === -1) {
+  var monthAbbreviations = MONTH_NAMES.map(function (name) { return name.substr(0, month.length); });
+  var monthIndex = monthAbbreviations.indexOf(month);
+  if (monthIndex !== -1 &&
+      monthAbbreviations.indexOf(month, monthIndex + 1) === -1) {
     return monthIndex;
   }
   return null;
