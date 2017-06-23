@@ -1,7 +1,5 @@
 # dehumanize-date
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/ForbesLindesay/dehumanize-date.svg)](https://greenkeeper.io/)
-
 Parse dates in all the formats humans like to use:
 
  - today/tomorrow/yesterday
