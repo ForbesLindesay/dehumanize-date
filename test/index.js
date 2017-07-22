@@ -162,3 +162,37 @@ describe('dehumanize usa', function (input) {
   equal('2/29/2004', '2004-02-29');
   equal('31-16-2012', null);
 });
+
+describe('dehumanize ISO date with different or mixed markers', function (input) {
+  return dehumanize(input);
+}, function (equal) {
+  equal('2004/02/29', '2004-02-29');
+  equal('2004-02/29', '2004-02-29');
+  equal('2004/02-29', '2004-02-29');
+  equal('2004\\02\\29', '2004-02-29');
+  equal('2004-02\\29', '2004-02-29');
+  equal('2004\\02-29', '2004-02-29');
+  equal('2004\\02/29', '2004-02-29');
+  equal('2004/02\\29', '2004-02-29');
+  equal('2004/2/29', '2004-02-29');
+  equal('2004-2/29', '2004-02-29');
+  equal('2004/2-29', '2004-02-29');
+  equal('2004\\2\\29', '2004-02-29');
+  equal('2004-2\\29', '2004-02-29');
+  equal('2004\\2-29', '2004-02-29');
+  equal('2004\\2/29', '2004-02-29');
+  equal('2004/2\\29', '2004-02-29');
+});
+
+describe('dehumanize ISO date with single digits', function (input) {
+  return dehumanize(input);
+}, function (equal) {
+  equal('2004-2-9', '2004-02-09');
+  equal('2004/2/9', '2004-02-09');
+  equal('2004-2/9', '2004-02-09');
+  equal('2004-2/9', '2004-02-09');
+  equal('2004-12-9', '2004-12-09');
+  equal('2004/12/9', '2004-12-09');
+  equal('2004-12/9', '2004-12-09');
+  equal('2004-12/9', '2004-12-09');
+});
