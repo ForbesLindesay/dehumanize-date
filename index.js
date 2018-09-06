@@ -44,7 +44,7 @@ exports = module.exports = function parse(str, options) {
          parseWordyDate(str, options.now, options.cutoff) ||
          parseIso8601Date(str);
 };
-exports.default = parse;
+exports.default = module.exports;
 
 var NUMBER              = /^[0-9]+$/;
 var NUMBER_WITH_ORDINAL = /^([0-9]+)(st|nd|rd|th)?$/;
