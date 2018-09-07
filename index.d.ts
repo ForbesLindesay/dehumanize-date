@@ -13,7 +13,7 @@ export interface Options {
   cutoff?: number;
 }
 
-function parse(str: string, options?: Options): string;
+declare function parse(str: string, options?: Options): string;
 export default parse;
 
 export function parseNearbyDays(str: string, now: Date): string;
