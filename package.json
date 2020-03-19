@@ -1,6 +1,5 @@
 {
   "name": "dehumanize-date",
-  "version": "2.6.2",
   "description": "Parse dates in all the formats humans like to use.",
   "main": "index.js",
   "scripts": {
