@@ -1,0 +1,123 @@
+version: 2.1
+
+refs:
+  - &only_master
+    filters:
+      branches:
+        only: master
+
+  - &not_master
+    filters:
+      branches:
+        ignore: master
+
+workflows:
+  test:
+    jobs:
+      - unit-tests:
+          <<: *not_master
+          name: node-10
+          version: '10'
+      - unit-tests:
+          <<: *not_master
+          name: node-12
+          version: '12'
+
+  release:
+    jobs:
+      - unit-tests:
+          <<: *only_master
+          name: node-10
+          version: '10'
+      - unit-tests:
+          <<: *only_master
+          name: node-12
+          version: '12'
+
+      - publish-dry-run:
+          <<: *only_master
+          context: common-env
+
+      - publish-approval:
+          type: approval
+          context: common-env
+          requires:
+            - publish-dry-run
+
+      - publish:
+          <<: *only_master
+          context: common-env
+          requires:
+            - node-10
+            - node-12
+            - publish-approval
+
+jobs:
+  unit-tests:
+    parameters:
+      version:
+        type: string
+    docker:
+      - image: circleci/node:<< parameters.version >>
+    steps:
+      - setup
+      - build
+      - test
+
+  publish-dry-run:
+    docker:
+      - image: circleci/node:12
+    steps:
+      - setup
+      - build
+      - publish-dry-run
+
+  publish:
+    docker:
+      - image: circleci/node:12
+    steps:
+      - setup
+      - build
+      - publish
+
+commands:
+  setup:
+    description: 'Checkout and install dependencies'
+    steps:
+      - checkout
+      - run:
+          name: Versions
+          command: node -v && npm -v && yarn -v
+      - run:
+          name: Install Dependencies
+          command: yarn install --pure-lockfile
+
+  build:
+    steps:
+      - run:
+          name: Build
+          command: yarn build
+
+  test:
+    steps:
+      - run:
+          name: Test
+          command: yarn test
+
+  publish-dry-run:
+    steps:
+      - run:
+          name: NPM Auth
+          command: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+      - run:
+          name: Release (Dry Run)
+          command: npx @changelogversion/cli --dry-run
+
+  publish:
+    steps:
+      - run:
+          name: NPM Auth
+          command: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+      - run:
+          name: Release
+          command: npx @changelogversion/cli
