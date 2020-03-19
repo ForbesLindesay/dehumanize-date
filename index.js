@@ -221,9 +221,3 @@ function date(year, month, day) {
 
   return year + '-' + month + '-' + day;
 }
-function getISOString(year, month, day) {
-  month++;
-  if (month < 10) month = '0' + month;
-  if (day < 10) day = '0' + day;
-  return year + '-' + month + '-' + day + 'T00:00:00.000Z';
-}
