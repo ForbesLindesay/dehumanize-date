@@ -102,7 +102,7 @@ commands:
           command: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
       - run:
           name: Release (Dry Run)
-          command: npx @changelogversion/cli --dry-run
+          command: npx rollingversions publish --dry-run
 
   publish:
     steps:
@@ -111,4 +111,4 @@ commands:
           command: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
       - run:
           name: Release
-          command: npx @changelogversion/cli
+          command: npx rollingversions publish
