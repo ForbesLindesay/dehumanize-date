@@ -6,8 +6,13 @@ var MONTH_NAMES = ["january", "february", "march",
                    "april",   "may",      "june",
                    "july",    "august",   "september",
                    "october", "november", "december"];
+var MONTH_NAMES_RU = ["январь", "февраль", "март",
+                   "апрель",   "май",      "июнь",
+                   "июль",    "август",   "сентябрь",
+                   "октябрь", "ноябрь", "декабрь"];
 
 var DAY_NAMES = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
+var DAY_NAMES_RU = ["воскресенье", "понедельник", "вторник", "среда", "четверг", "пятница", "суббота"];
 
 var DAYS_IN_MONTH = [
   31,
@@ -79,17 +84,26 @@ function parseNearbyDays(string, now) {
 exports.parseLastThisNext = parseLastThisNext;
 function parseLastThisNext(string, now) {
   var tokens = string.split(/[,\s]+/);
-  if (['last', 'this', 'next'].indexOf(tokens[0]) >= 0 &&
+  if (['last', 'прошлый', 'прошлая', 'прошлое', 'this', 'этот', 'эта', 'это', 'next', 'следующий', 'следующая', 'следующее'].indexOf(tokens[0]) >= 0 &&
       tokens.length === 2 ) {
-    var dayAbbreviations = DAY_NAMES.map(function (name) { return name.substr(0, tokens[1].length); });
+    var dayAbbreviations = DAY_NAMES.concat(DAY_NAMES_RU).map(function (name) { return name.substr(0, tokens[1].length); });
     var dayIndex = dayAbbreviations.indexOf(tokens[1]);
     if (dayIndex !== -1 &&
         dayAbbreviations.indexOf(tokens[1], dayIndex + 1) === -1) {
       var dayDiff = dayIndex - now.getDay();
       if (dayDiff < 0) dayDiff += 7;
       if (tokens[0] === 'last') return addDays(now, dayDiff - 7);
+      if (tokens[0] === 'прошлый') return addDays(now, dayDiff - 7);
+      if (tokens[0] === 'прошлая') return addDays(now, dayDiff - 7);
+      if (tokens[0] === 'прошлое') return addDays(now, dayDiff - 7);
       if (tokens[0] === 'this') return addDays(now, dayDiff);
+      if (tokens[0] === 'этот') return addDays(now, dayDiff);
+      if (tokens[0] === 'эта') return addDays(now, dayDiff);
+      if (tokens[0] === 'это') return addDays(now, dayDiff);
       if (tokens[0] === 'next') return addDays(now, dayDiff + 7);
+      if (tokens[0] === 'следующий') return addDays(now, dayDiff + 7);
+      if (tokens[0] === 'следующая') return addDays(now, dayDiff + 7);
+      if (tokens[0] === 'следующее') return addDays(now, dayDiff + 7);
     }
     return null;
   } else {
@@ -197,7 +211,7 @@ function parseIso8601Date(string) {
 
 exports.monthFromName = monthFromName;
 function monthFromName(month) {
-  var monthAbbreviations = MONTH_NAMES.map(function (name) { return name.substr(0, month.length); });
+  var monthAbbreviations = MONTH_NAMES.concat(MONTH_NAMES_RU).map(function (name) { return name.substr(0, month.length); });
   var monthIndex = monthAbbreviations.indexOf(month);
   if (monthIndex !== -1 &&
       monthAbbreviations.indexOf(month, monthIndex + 1) === -1) {
