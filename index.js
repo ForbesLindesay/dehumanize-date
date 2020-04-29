@@ -70,11 +70,11 @@ function addDays(now, numberOfDays) {
 
 exports.parseNearbyDays = parseNearbyDays;
 function parseNearbyDays(string, now) {
-  if (string == 'today') {
+  if (string == 'today' || string == 'сегодня') {
     return date(now.getFullYear(), now.getMonth(), now.getDate());;
-  } else if (string == 'yesterday') {
+  } else if (string == 'yesterday' || string == 'вчера') {
     return addDays(now, -1);
-  } else if (string == 'tomorrow') {
+  } else if (string == 'tomorrow' || string == 'завтра') {
     return addDays(now, +1);
   } else {
     return null;
