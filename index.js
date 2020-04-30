@@ -86,8 +86,12 @@ function parseLastThisNext(string, now) {
   var tokens = string.split(/[,\s]+/);
   if (['last', 'прошлый', 'прошлая', 'прошлое', 'this', 'этот', 'эта', 'это', 'next', 'следующий', 'следующая', 'следующее'].indexOf(tokens[0]) >= 0 &&
       tokens.length === 2 ) {
-    var dayAbbreviations = DAY_NAMES.concat(DAY_NAMES_RU).map(function (name) { return name.substr(0, tokens[1].length); });
+    var dayAbbreviations = DAY_NAMES.map(function (name) { return name.substr(0, tokens[1].length); });
+    var dayAbbreviationsRu = DAY_NAMES_RU.map(function (name) { return name.substr(0, tokens[1].length); });
     var dayIndex = dayAbbreviations.indexOf(tokens[1]);
+    if (dayIndex === -1) {
+      dayIndex = dayAbbreviationsRu.indexOf(tokens[1]);
+    }
     if (dayIndex !== -1 &&
         dayAbbreviations.indexOf(tokens[1], dayIndex + 1) === -1) {
       var dayDiff = dayIndex - now.getDay();
@@ -211,8 +215,12 @@ function parseIso8601Date(string) {
 
 exports.monthFromName = monthFromName;
 function monthFromName(month) {
-  var monthAbbreviations = MONTH_NAMES.concat(MONTH_NAMES_RU).map(function (name) { return name.substr(0, month.length); });
+  var monthAbbreviations = MONTH_NAMES.map(function (name) { return name.substr(0, month.length); });
+  var monthAbbreviationsRu = MONTH_NAMES_RU.map(function (name) { return name.substr(0, month.length); });
   var monthIndex = monthAbbreviations.indexOf(month);
+  if (monthIndex === -1) {
+    var monthIndex = monthAbbreviationsRu.indexOf(month);
+  }
   if (monthIndex !== -1 &&
       monthAbbreviations.indexOf(month, monthIndex + 1) === -1) {
     return monthIndex;
