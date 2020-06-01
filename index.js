@@ -44,6 +44,20 @@ var MONTH_NAMES_IT = [
   'novembre',
   'dicembre',
 ]
+var MONTH_NAMES_UA = [
+  'січень',
+  'лютий',
+  'березень',
+  'квітень',
+  'травень',
+  'червень',
+  'липень',
+  'серпень',
+  'вересень',
+  'жовтень',
+  'листопад',
+  'грудень',
+]
 
 var DAY_NAMES = [
   'sunday',
@@ -71,6 +85,15 @@ var DAY_NAMES_IT = [
   'giovedì',
   'venerdì',
   'sabato',
+]
+var DAY_NAMES_UA = [
+  'неділя',
+  'понеділок',
+  'вівторок',
+  'середа',
+  'четвер',
+  "п'ятниця",
+  'субота',
 ]
 
 var DAYS_IN_MONTH = [
@@ -130,11 +153,26 @@ function addDays(now, numberOfDays) {
 
 exports.parseNearbyDays = parseNearbyDays
 function parseNearbyDays(string, now) {
-  if (string == 'today' || string == 'сегодня' || string == 'oggi') {
+  if (
+    string == 'today' ||
+    string == 'сегодня' ||
+    string == 'oggi' ||
+    string == 'сьогодні'
+  ) {
     return date(now.getFullYear(), now.getMonth(), now.getDate())
-  } else if (string == 'yesterday' || string == 'вчера' || string == 'ieri') {
+  } else if (
+    string == 'yesterday' ||
+    string == 'вчера' ||
+    string == 'ieri' ||
+    string == 'вчора'
+  ) {
     return addDays(now, -1)
-  } else if (string == 'tomorrow' || string == 'завтра' || string == 'domani') {
+  } else if (
+    string == 'tomorrow' ||
+    string == 'завтра' ||
+    string == 'domani' ||
+    string == 'завтра'
+  ) {
     return addDays(now, +1)
   } else {
     return null
@@ -152,18 +190,27 @@ function parseLastThisNext(string, now) {
       'прошлое',
       'ultimo',
       'ultima',
+      'минулий',
+      'минула',
+      'минуле',
       'this',
       'этот',
       'эта',
       'это',
       'questo',
       'questa',
+      'цей',
+      'ця',
+      'це',
       'next',
       'следующий',
       'следующая',
       'следующее',
       'scorso',
       'scorsa',
+      'наступний',
+      'наступна',
+      'наступне',
     ].indexOf(tokens[0]) >= 0 &&
     tokens.length === 2
   ) {
@@ -176,12 +223,18 @@ function parseLastThisNext(string, now) {
     var dayAbbreviationsIt = DAY_NAMES_IT.map(function (name) {
       return name.substr(0, tokens[1].length)
     })
+    var dayAbbreviationsUa = DAY_NAMES_UA.map(function (name) {
+      return name.substr(0, tokens[1].length)
+    })
     var dayIndex = dayAbbreviations.indexOf(tokens[1])
     if (dayIndex === -1) {
       dayIndex = dayAbbreviationsRu.indexOf(tokens[1])
     }
     if (dayIndex === -1) {
       dayIndex = dayAbbreviationsIt.indexOf(tokens[1])
+    }
+    if (dayIndex === -1) {
+      dayIndex = dayAbbreviationsUa.indexOf(tokens[1])
     }
     if (
       dayIndex !== -1 &&
@@ -193,14 +246,29 @@ function parseLastThisNext(string, now) {
       if (tokens[0] === 'прошлый') return addDays(now, dayDiff - 7)
       if (tokens[0] === 'прошлая') return addDays(now, dayDiff - 7)
       if (tokens[0] === 'прошлое') return addDays(now, dayDiff - 7)
+      if (tokens[0] === 'минулий') return addDays(now, dayDiff - 7)
+      if (tokens[0] === 'минула') return addDays(now, dayDiff - 7)
+      if (tokens[0] === 'минуле') return addDays(now, dayDiff - 7)
+      if (tokens[0] === 'ultimo') return addDays(now, dayDiff - 7)
+      if (tokens[0] === 'ultima') return addDays(now, dayDiff - 7)
       if (tokens[0] === 'this') return addDays(now, dayDiff)
       if (tokens[0] === 'этот') return addDays(now, dayDiff)
       if (tokens[0] === 'эта') return addDays(now, dayDiff)
       if (tokens[0] === 'это') return addDays(now, dayDiff)
+      if (tokens[0] === 'цей') return addDays(now, dayDiff)
+      if (tokens[0] === 'ця') return addDays(now, dayDiff)
+      if (tokens[0] === 'це') return addDays(now, dayDiff)
+      if (tokens[0] === 'questo') return addDays(now, dayDiff)
+      if (tokens[0] === 'questa') return addDays(now, dayDiff)
       if (tokens[0] === 'next') return addDays(now, dayDiff + 7)
       if (tokens[0] === 'следующий') return addDays(now, dayDiff + 7)
       if (tokens[0] === 'следующая') return addDays(now, dayDiff + 7)
       if (tokens[0] === 'следующее') return addDays(now, dayDiff + 7)
+      if (tokens[0] === 'наступний') return addDays(now, dayDiff + 7)
+      if (tokens[0] === 'наступна') return addDays(now, dayDiff + 7)
+      if (tokens[0] === 'наступне') return addDays(now, dayDiff + 7)
+      if (tokens[0] === 'scorso') return addDays(now, dayDiff + 7)
+      if (tokens[0] === 'scorsa') return addDays(now, dayDiff + 7)
     }
     return null
   } else {
@@ -329,12 +397,18 @@ function monthFromName(month) {
   var monthAbbreviationsIt = MONTH_NAMES_IT.map(function (name) {
     return name.substr(0, month.length)
   })
+  var monthAbbreviationsUa = MONTH_NAMES_UA.map(function (name) {
+    return name.substr(0, month.length)
+  })
   var monthIndex = monthAbbreviations.indexOf(month)
   if (monthIndex === -1) {
     monthIndex = monthAbbreviationsRu.indexOf(month)
   }
   if (monthIndex === -1) {
     monthIndex = monthAbbreviationsIt.indexOf(month)
+  }
+  if (monthIndex === -1) {
+    monthIndex = monthAbbreviationsUa.indexOf(month)
   }
   if (
     monthIndex !== -1 &&
